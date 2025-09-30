@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Tarefas - Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+        }
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 100; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+            align-items: center; /* For vertical centering of modal-content */
+            justify-content: center; /* For horizontal centering of modal-content */
+        }
+        .modal-content {
+            background-color: #ffffff;
+            margin: auto; /* Handles cases where flex might not perfectly center due to other styles */
+            padding: 24px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .table-cell-truncate {
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        /* Custom scrollbar for task list if it overflows */
+        .task-list-container::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .task-list-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .task-list-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        .task-list-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="antialiased text-slate-700">
+
+    <div id="loginScreen" class="flex items-center justify-center min-h-screen bg-gradient-to-br from-sky-500 to-indigo-600 p-4">
+        <div class="bg-white p-8 md:p-10 rounded-xl shadow-2xl w-full max-w-md">
+            <div class="text-center mb-8">
+                <i class="fas fa-tasks fa-3x text-sky-600 mb-3"></i>
+                <h1 class="text-3xl font-bold text-slate-800">Admin Login</h1>
+                <p class="text-slate-500">Acesso ao painel de gerenciamento de tarefas.</p>
+            </div>
+            <form id="loginForm">
+                <div class="mb-5">
+                    <label for="email" class="block mb-2 text-sm font-medium text-slate-600">Email</label>
+                    <input type="email" id="email" name="email" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-3" placeholder="admin@exemplo.com" required value="admin@exemplo.com">
+                </div>
+                <div class="mb-6">
+                    <label for="password" class="block mb-2 text-sm font-medium text-slate-600">Senha</label>
+                    <input type="password" id="password" name="password" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-3" placeholder="••••••••" required value="admin123">
+                </div>
+                <button type="submit" class="w-full text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none focus:ring-sky-300 font-medium rounded-lg text-sm px-5 py-3 text-center transition duration-150 ease-in-out">
+                    Entrar <i class="fas fa-sign-in-alt ml-2"></i>
+                </button>
+                <p id="loginError" class="text-red-500 text-sm mt-4 text-center"></p>
+            </form>
+        </div>
+    </div>
+
+    <div id="adminArea" class="hidden min-h-screen bg-slate-100">
+        <header class="bg-white shadow-md sticky top-0 z-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center">
+                        <i class="fas fa-cogs fa-2x text-sky-600"></i>
+                        <h1 class="ml-3 text-2xl font-semibold text-slate-800">Painel Administrativo</h1>
+                    </div>
+                    <button id="logoutButton" class="text-sm text-sky-600 hover:text-sky-800 font-medium flex items-center">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Sair
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+            <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
+                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+                    <h2 class="text-2xl font-bold text-slate-700 mb-3 sm:mb-0">
+                        <i class="fas fa-list-check mr-2 text-sky-500"></i>Gerenciamento de Tarefas
+                    </h2>
+                    <button id="openAddTaskModalButton" class="bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-150 ease-in-out flex items-center">
+                        <i class="fas fa-plus mr-2"></i>Adicionar Nova Tarefa
+                    </button>
+                </div>
+
+                <div class="mb-6 flex flex-col sm:flex-row gap-4">
+                    <div class="flex-1">
+                        <label for="filterStatus" class="block text-sm font-medium text-slate-600 mb-1">Filtrar por Estado:</label>
+                        <select id="filterStatus" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 p-2.5">
+                            <option value="todos">Todos</option>
+                            <option value="pendente">Pendente</option>
+                            <option value="em_progresso">Em Progresso</option>
+                            <option value="concluida">Concluída</option>
+                            <option value="bloqueada">Bloqueada</option>
+                        </select>
+                    </div>
+                     <div class="flex-1">
+                        <label for="filterPriority" class="block text-sm font-medium text-slate-600 mb-1">Filtrar por Prioridade:</label>
+                        <select id="filterPriority" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 p-2.5">
+                            <option value="todas">Todas</option>
+                            <option value="baixa">Baixa</option>
+                            <option value="media">Média</option>
+                            <option value="alta">Alta</option>
+                            <option value="urgente">Urgente</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto task-list-container rounded-lg border border-slate-200">
+                    <table class="min-w-full divide-y divide-slate-200">
+                        <thead class="bg-slate-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">ID</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Título</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Atribuído a</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Prioridade</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Estado</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Data Limite</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="taskList" class="bg-white divide-y divide-slate-200">
+                            <tr id="noTasksMessage" class="hidden">
+                                <td colspan="7" class="px-6 py-10 text-center text-slate-500">
+                                    <i class="fas fa-folder-open fa-3x mb-3"></i><br>
+                                    Nenhuma tarefa encontrada. Adicione uma nova tarefa ou ajuste os filtros!
+                                </td>
+                            </tr>
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="modalTitle" class="text-xl font-semibold text-slate-800">Adicionar Nova Tarefa</h3>
+                <button id="closeTaskModalButton" class="text-slate-400 hover:text-slate-600">
+                    <i class="fas fa-times fa-lg"></i>
+                </button>
+            </div>
+            <form id="taskForm">
+                <input type="hidden" id="taskId" name="taskId">
+                <div class="mb-4">
+                    <label for="taskTitle" class="block mb-1 text-sm font-medium text-slate-600">Título da Tarefa</label>
+                    <input type="text" id="taskTitle" name="taskTitle" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" required>
+                </div>
+                <div class="mb-4">
+                    <label for="taskDescription" class="block mb-1 text-sm font-medium text-slate-600">Descrição</label>
+                    <textarea id="taskDescription" name="taskDescription" rows="3" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5"></textarea>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="taskAssignedTo" class="block mb-1 text-sm font-medium text-slate-600">Atribuir para (Email)</label>
+                        <input type="email" id="taskAssignedTo" name="taskAssignedTo" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" placeholder="membro@exemplo.com">
+                    </div>
+                    <div>
+                        <label for="taskDueDate" class="block mb-1 text-sm font-medium text-slate-600">Data Limite</label>
+                        <input type="date" id="taskDueDate" name="taskDueDate" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5">
+                    </div>
+                </div>
+                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label for="taskPriority" class="block mb-1 text-sm font-medium text-slate-600">Prioridade</label>
+                        <select id="taskPriority" name="taskPriority" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5">
+                            <option value="baixa">Baixa</option>
+                            <option value="media" selected>Média</option>
+                            <option value="alta">Alta</option>
+                            <option value="urgente">Urgente</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="taskStatus" class="block mb-1 text-sm font-medium text-slate-600">Estado</label>
+                        <select id="taskStatus" name="taskStatus" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5">
+                            <option value="pendente" selected>Pendente</option>
+                            <option value="em_progresso">Em Progresso</option>
+                            <option value="concluida">Concluída</option>
+                            <option value="bloqueada">Bloqueada</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3">
+                    <button type="button" id="cancelTaskFormButton" class="text-slate-700 bg-slate-200 hover:bg-slate-300 font-medium rounded-lg text-sm px-5 py-2.5 transition">Cancelar</button>
+                    <button type="submit" id="saveTaskButton" class="text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:outline-none focus:ring-sky-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition">Salvar Tarefa</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-5 right-5 bg-slate-800 text-white py-3 px-5 rounded-lg shadow-xl text-sm transition-opacity duration-300 opacity-0 z-[150]">
+        <span id="toastMessage"></span>
+    </div>
+
+
+<script>
+    // Configuração da API
+    const API_BASE_URL = 'http://localhost:3000/api'; // Ajuste a porta se o seu backend usar outra
+    let authToken = null;
+    let tasks = []; // Array para armazenar tarefas buscadas para facilitar a edição
+
+    // Elementos da UI
+    const loginScreen = document.getElementById('loginScreen');
+    const adminArea = document.getElementById('adminArea');
+    const loginForm = document.getElementById('loginForm');
+    const loginError = document.getElementById('loginError');
+    const logoutButton = document.getElementById('logoutButton');
+
+    const taskModal = document.getElementById('taskModal');
+    const openAddTaskModalButton = document.getElementById('openAddTaskModalButton');
+    const closeTaskModalButton = document.getElementById('closeTaskModalButton');
+    const cancelTaskFormButton = document.getElementById('cancelTaskFormButton');
+    const taskForm = document.getElementById('taskForm');
+    const modalTitle = document.getElementById('modalTitle');
+    const saveTaskButton = document.getElementById('saveTaskButton');
+    const taskIdInput = document.getElementById('taskId');
+    const taskListTableBody = document.getElementById('taskList');
+    const noTasksMessage = document.getElementById('noTasksMessage');
+
+    const filterStatusSelect = document.getElementById('filterStatus');
+    const filterPrioritySelect = document.getElementById('filterPriority');
+
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toastMessage');
+
+    // --- Lógica de Autenticação ---
+    loginForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const email = event.target.email.value;
+        const password = event.target.password.value;
+        loginError.textContent = '';
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
+            const data = await response.json();
+
+            if (response.ok) {
+                authToken = data.token;
+                localStorage.setItem('authToken', authToken);
+                // localStorage.setItem('userEmail', data.user.email); // Opcional
+
+                loginScreen.classList.add('hidden');
+                adminArea.classList.remove('hidden');
+                await renderTasks();
+                showToast('Login bem-sucedido!', 'success');
+            } else {
+                loginError.textContent = data.message || 'Email ou senha inválidos.';
+                showToast(data.message || 'Falha no login.', 'error');
+            }
+        } catch (error) {
+            console.error('Login request failed:', error);
+            loginError.textContent = 'Erro ao tentar fazer login. Verifique a conexão com o servidor.';
+            showToast('Erro de conexão com o servidor.', 'error');
+        }
+    });
+
+    logoutButton.addEventListener('click', function() {
+        authToken = null;
+        localStorage.removeItem('authToken');
+        // localStorage.removeItem('userEmail'); // Opcional
+
+        adminArea.classList.add('hidden');
+        loginScreen.classList.remove('hidden');
+        loginForm.reset();
+        taskListTableBody.innerHTML = ''; // Limpa a tabela
+        tasks = []; // Limpa o array de tarefas
+        noTasksMessage.classList.remove('hidden'); // Mostra a mensagem de "nenhuma tarefa"
+        showToast('Logout efetuado.', 'info');
+    });
+
+    // --- Lógica do Modal de Tarefas ---
+    function openModal(task = null) {
+        taskForm.reset();
+        if (task) {
+            modalTitle.textContent = 'Editar Tarefa';
+            saveTaskButton.textContent = 'Salvar Alterações';
+            taskIdInput.value = task.id;
+            document.getElementById('taskTitle').value = task.title;
+            document.getElementById('taskDescription').value = task.description || '';
+            document.getElementById('taskAssignedTo').value = task.assignedTo || '';
+            document.getElementById('taskDueDate').value = task.dueDate || ''; // Formato YYYY-MM-DD
+            document.getElementById('taskPriority').value = task.priority || 'media';
+            document.getElementById('taskStatus').value = task.status || 'pendente';
+        } else {
+            modalTitle.textContent = 'Adicionar Nova Tarefa';
+            saveTaskButton.textContent = 'Adicionar Tarefa';
+            taskIdInput.value = '';
+            // Pode definir padrões para nova tarefa se desejar
+            document.getElementById('taskPriority').value = 'media';
+            document.getElementById('taskStatus').value = 'pendente';
+        }
+        taskModal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        taskModal.style.display = 'none';
+    }
+
+    openAddTaskModalButton.addEventListener('click', () => openModal());
+    closeTaskModalButton.addEventListener('click', closeModal);
+    cancelTaskFormButton.addEventListener('click', closeModal);
+    window.addEventListener('click', function(event) {
+        if (event.target === taskModal) {
+            closeModal();
+        }
+    });
+
+    // --- Lógica CRUD de Tarefas ---
+    taskForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        if (!authToken) {
+            showToast('Autenticação necessária.', 'error');
+            logoutButton.click(); // Força logout
+            return;
+        }
+
+        const id = taskIdInput.value ? parseInt(taskIdInput.value) : null;
+        const taskData = {
+            title: event.target.taskTitle.value,
+            description: event.target.taskDescription.value,
+            assignedTo: event.target.taskAssignedTo.value,
+            dueDate: event.target.taskDueDate.value || null, // Envia null se vazio
+            priority: event.target.taskPriority.value,
+            status: event.target.taskStatus.value,
+        };
+
+        let url = `${API_BASE_URL}/tasks`;
+        let method = 'POST';
+
+        if (id) {
+            url += `/${id}`;
+            method = 'PUT';
+        }
+
+        try {
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`
+                },
+                body: JSON.stringify(taskData)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                showToast(id ? 'Tarefa atualizada com sucesso!' : 'Tarefa adicionada com sucesso!', 'success');
+                await renderTasks();
+                closeModal();
+            } else {
+                if (response.status === 401) {
+                    showToast('Sessão expirada. Faça login novamente.', 'error');
+                    logoutButton.click();
+                    return;
+                }
+                showToast(`Erro: ${result.message || 'Não foi possível salvar a tarefa.'}`, 'error');
+            }
+        } catch (error) {
+            console.error('Error saving task:', error);
+            showToast('Erro de conexão ao salvar tarefa.', 'error');
+        }
+    });
+
+    function editTask(taskId) {
+        const taskToEdit = tasks.find(t => t.id === taskId);
+        if (taskToEdit) {
+            openModal(taskToEdit);
+        } else {
+            showToast('Tarefa não encontrada para edição. Tente atualizar a lista.', 'error');
+            // Opcional: buscar a tarefa específica do backend se não encontrada localmente
+            // fetch(`${API_BASE_URL}/tasks/${taskId}`, { headers: {'Authorization': `Bearer ${authToken}` }})
+            // .then(res => res.json()).then(task => openModal(task));
+        }
+    }
+
+    async function deleteTask(taskId) {
+        if (!confirm('Tem certeza que deseja excluir esta tarefa?')) {
+            return;
+        }
+        if (!authToken) {
+            showToast('Autenticação necessária.', 'error');
+            logoutButton.click();
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+
+            if (response.ok) {
+                showToast('Tarefa excluída com sucesso!', 'info');
+                await renderTasks();
+            } else {
+                if (response.status === 401) {
+                    showToast('Sessão expirada. Faça login novamente.', 'error');
+                    logoutButton.click();
+                    return;
+                }
+                const result = await response.json().catch(() => ({ message: 'Erro ao excluir.' }));
+                showToast(`Erro: ${result.message || 'Não foi possível excluir a tarefa.'}`, 'error');
+            }
+        } catch (error) {
+            console.error('Error deleting task:', error);
+            showToast('Erro de conexão ao excluir tarefa.', 'error');
+        }
+    }
+
+    // --- Renderização da Lista de Tarefas ---
+    async function renderTasks() {
+        taskListTableBody.innerHTML = ''; // Limpa a lista
+        noTasksMessage.classList.add('hidden');
+
+        if (!authToken) {
+            // Não mostra toast aqui, pois initializeApp cuidará da tela de login
+            // e o logout já mostra toast.
+            tasks = []; // Limpa o array local
+            noTasksMessage.classList.remove('hidden');
+            return;
+        }
+
+        const statusFilter = filterStatusSelect.value;
+        const priorityFilter = filterPrioritySelect.value;
+
+        let fetchUrl = `${API_BASE_URL}/tasks?`;
+        const params = new URLSearchParams();
+        if (statusFilter !== 'todos') params.append('status', statusFilter);
+        if (priorityFilter !== 'todas') params.append('priority', priorityFilter);
+        fetchUrl += params.toString();
+
+        try {
+            const response = await fetch(fetchUrl, {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+
+            if (!response.ok) {
+                if (response.status === 401) {
+                    showToast('Sessão expirada ou inválida. Faça login novamente.', 'error');
+                    logoutButton.click(); // Força o logout
+                    return;
+                }
+                throw new Error(`Erro HTTP: ${response.status}`);
+            }
+
+            const fetchedTasks = await response.json();
+            tasks = fetchedTasks; // Atualiza o array global de tarefas
+
+            if (tasks.length === 0) {
+                noTasksMessage.classList.remove('hidden');
+            } else {
+                noTasksMessage.classList.add('hidden');
+                tasks.forEach(task => {
+                    const row = taskListTableBody.insertRow();
+                    
+                    let displayDueDate = 'N/A';
+                    if (task.dueDate) {
+                        // Backend envia YYYY-MM-DD. JS Date() interpreta isso como UTC.
+                        // Para exibir como data local sem problemas de fuso, adicione T00:00:00
+                        const dateParts = task.dueDate.split('-');
+                        const year = parseInt(dateParts[0]);
+                        const month = parseInt(dateParts[1]) -1; // Mês é 0-indexado
+                        const day = parseInt(dateParts[2]);
+                        displayDueDate = new Date(year, month, day).toLocaleDateString('pt-BR', {timeZone: 'America/Sao_Paulo'}); // Ou use UTC para consistência
+                    }
+
+                    let isOverdue = false;
+                    if (task.dueDate && task.status !== 'concluida') {
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0); // Comparar apenas a data
+                        
+                        const datePartsDue = task.dueDate.split('-');
+                        const dueDateObj = new Date(parseInt(datePartsDue[0]), parseInt(datePartsDue[1]) -1, parseInt(datePartsDue[2]));
+                        dueDateObj.setHours(0,0,0,0);
+
+                        if (dueDateObj < today) {
+                            isOverdue = true;
+                        }
+                    }
+                    row.className = task.status === 'concluida' ? 'bg-green-50' : (isOverdue ? 'bg-red-50' : '');
+
+                    row.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">${task.id}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-700 table-cell-truncate" title="${task.title}">${task.title}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 table-cell-truncate" title="${task.assignedTo || 'N/A'}">${task.assignedTo || 'N/A'}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getPriorityClass(task.priority)}">
+                                ${task.priority ? task.priority.charAt(0).toUpperCase() + task.priority.slice(1) : 'N/A'}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClass(task.status)}">
+                                ${task.status ? task.status.replace('_', ' ').charAt(0).toUpperCase() + task.status.replace('_', ' ').slice(1) : 'N/A'}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">${displayDueDate}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button onclick="editTask(${task.id})" class="text-sky-600 hover:text-sky-800 mr-3" title="Editar"><i class="fas fa-edit"></i></button>
+                            <button onclick="deleteTask(${task.id})" class="text-red-500 hover:text-red-700" title="Excluir"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    `;
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching tasks:', error);
+            showToast('Erro ao carregar tarefas. Verifique a conexão.', 'error');
+            tasks = []; // Limpa array em caso de erro
+            noTasksMessage.classList.remove('hidden');
+        }
+    }
+
+    function getStatusClass(status) {
+        switch (status) {
+            case 'pendente': return 'bg-yellow-100 text-yellow-800';
+            case 'em_progresso': return 'bg-blue-100 text-blue-800';
+            case 'concluida': return 'bg-green-100 text-green-800';
+            case 'bloqueada': return 'bg-red-100 text-red-800';
+            default: return 'bg-slate-100 text-slate-800';
+        }
+    }
+    function getPriorityClass(priority) {
+        switch (priority) {
+            case 'baixa': return 'bg-green-100 text-green-800'; // Ajustado para verde como no backend
+            case 'media': return 'bg-yellow-100 text-yellow-800';
+            case 'alta': return 'bg-orange-100 text-orange-800';
+            case 'urgente': return 'bg-red-100 text-red-800';
+            default: return 'bg-slate-100 text-slate-800';
+        }
+    }
+
+    // --- Toast Notification Logic ---
+    let toastTimeout;
+    function showToast(message, type = 'info') {
+        toastMessage.textContent = message;
+        toast.classList.remove('opacity-0');
+        toast.classList.remove('bg-slate-800', 'bg-green-600', 'bg-red-600', 'bg-sky-600'); // Limpa classes de cor antigas
+
+        if (type === 'success') {
+            toast.classList.add('bg-green-600');
+        } else if (type === 'error') {
+            toast.classList.add('bg-red-600');
+        } else if (type === 'info') {
+            toast.classList.add('bg-sky-600');
+        } else { // default
+            toast.classList.add('bg-slate-800');
+        }
+
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+            toast.classList.add('opacity-0');
+        }, 3000);
+    }
+
+    // Adicionar listeners para os filtros
+    filterStatusSelect.addEventListener('change', renderTasks);
+    filterPrioritySelect.addEventListener('change', renderTasks);
+
+    // Inicialização da Aplicação
+    async function initializeApp() {
+        const storedToken = localStorage.getItem('authToken');
+        if (storedToken) {
+            authToken = storedToken;
+            loginScreen.classList.add('hidden');
+            adminArea.classList.remove('hidden');
+            await renderTasks(); // Busca e renderiza tarefas se o token existir
+        } else {
+            adminArea.classList.add('hidden');
+            loginScreen.classList.remove('hidden');
+            noTasksMessage.classList.remove('hidden'); // Garante que a mensagem apareça se não logado
+        }
+    }
+
+    initializeApp(); // Chama a inicialização ao carregar o script
+
+</script>
+
+</body>
+</html>

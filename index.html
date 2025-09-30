@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./favicon.png" type="image/png">
+    <title>portfolioHUB</title>
+
+    <!-- swiper css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+
+    <!-- box icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- custom css -->
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+    <!-- header design -->
+    <header class="header">
+        <a href="#" class="logo">portfolioHUB</a>
+
+        <nav class="navbar">
+            <a href="#home" class="active">Início</a>
+            <a href="#about">Sobre</a>
+            <a href="#services">Serviços</a>
+            <a href="#portfolio">Porfólio</a>
+            <a href="#contact">Contato</a>
+        </nav>
+
+        <div class="bx bx-moon" id="darkMode-icon"></div>
+
+        <div class="bx bx-menu" id="menu-icon"></div>
+    </header>
+
+    <!-- home section design -->
+    <section class="home" id="home">
+        <div class="home-content">
+            <h3>Ola, eu sou</h3>
+            <h1>Matheus Santos</h1>
+            <p>
+                Eu sou um formando em Análise e Desenvolvimento de Sistemas pela Faculdade UDF, atualmente aluno
+                estudando Engenharia da Computação na Faculdade UNICEUB. Apaixonado por tecnologia e inovação,
+                sempre busco aprender algo novo todos os dias.
+            </p>
+            <p>Atualmente, estou em busca de oportunidades para iniciar minha carreira 
+                e adquirir conhecimento prático, além do teórico, visando meu desenvolvimento profissional.</p>
+
+            <div class="social-media">
+                <a href="https://www.instagram.com/mth.santos061"><i class='bx bxl-instagram-alt'></i></a>
+                <a href="https://www.linkedin.com/in/mthsantos061"><i class='bx bxl-linkedin'></i></a>
+            </div>
+
+            <a href="curriculoparaportfolio.html" class="btn">Baixar CV</a>
+        </div>
+
+        <div class="profession-container">
+            <div class="profession-box">
+                <div class="profession" style="--i:0;">
+                    <i class='bx bx-code-alt'></i>
+                    <h3>Web Developer</h3>
+                </div>
+                <div class="profession" style="--i:1;">
+                    <i class='bx  bx-book-bookmark'></i> 
+                    <h3>Estudante</h3>
+                </div>
+                <div class="profession" style="--i:2;">
+                    <i class='bx bx-palette'></i>
+                    <h3>Web Designer</h3>
+                </div>
+                <div class="profession" style="--i:3;">
+                    <i class='bx bx-certification'></i>
+                    <h3>Formado</h3>
+                </div>
+
+                <div class="circle"></div>
+            </div>
+
+            <div class="overlay"></div>
+        </div>
+
+        <div class="home-img">
+            <img src="images/foto2.png" alt="">
+        </div>
+    </section>
+
+    <!-- about section design -->
+    <section class="about" id="about">
+        <div class="about-img">
+            <img src="images/foto.jpg" alt="">
+        </div>
+
+        <div class="about-content">
+            <h2 class="heading">Sobre <span>Mim</span></h2>
+            <h3>
+                Ola, eu sou Matheus Santos, um entusiasta de tecnologia e inovação.
+                este é meu site que desenvolvi para compartilhar meus conhecimentos
+                e experiências na área de desenvolvimento web.
+            </h3>
+            <p>
+                Esse site é um espaço onde compartilho meus pensamentos, ideias e
+                projetos relacionados ao desenvolvimento web. Aqui, você encontrará
+                projetos, meu portfólio e serviços úteis para quem deseja saber mais sobre mim.
+            </p>
+            <p>
+                Obrigado por visitar meu site. Fique à vontade para explorar e entrar em contato
+                comigo se tiver alguma dúvida ou quiser discutir sobre desenvolvimento web ou outros assuntos.
+            </p>
+            <!--<a href="#" class="btn">Leia mais</a> -->
+        </div>
+    </section>
+
+    <!-- services section design -->
+    <section class="services" id="services">
+        <h2 class="heading">Meus <span>Serviços</span></h2>
+
+        <div class="services-container">
+            <div class="services-box">
+                <i class='bx bx-code-alt'></i>
+                <h3>Desenvolvimento Web</h3>
+                <p></p>
+                <a href="#" class="btn">Saiba Mais</a>
+            </div>
+            <div class="services-box">
+                <i class='bx bxs-paint'></i>
+                <h3>Projetos</h3>
+                <p></p>
+                <a href="#portfolio" class="btn">Saiba Mais</a>
+            </div>
+            <div class="services-box">
+                <i class='bx bx-bar-chart-alt'></i>
+                <h3>Python</h3>
+                <p></p>
+                <a href="#" class="btn">Saiba Mais</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- portfolio section design -->
+    <section class="portfolio" id="portfolio">
+        <h2 class="heading">Últimos <span>Projetos</span></h2>
+
+        <div class="portfolio-container">
+            <div class="portfolio-box">
+                <img src="images/adminpainel.png" alt="">
+
+                <div class="portfolio-layer">
+                    <h4>Painel de Admin</h4>
+                    <p>Projeto simples feito durante o final do curso de analíse e desenvolvimento de sistemas</p>
+                    <a href="ProjetoAdmin/admin_tarefas.html"><i class='bx bx-link-external'></i></a>
+                </div>
+            </div>
+            <div class="portfolio-box">
+                <img src="images/banco.png" alt="">
+
+                <div class="portfolio-layer">
+                    <h4>Banco Imobiliário</h4>
+                    <p>Projeto simples feito durante o curso de analíse e desenvolvimento de sistemas</p>
+                    <a href="Life game/Life game/index.html"><i class='bx bx-link-external'></i></a>
+                </div>
+            </div>
+           <!-- <div class="portfolio-box">
+                <img src="images/portfolio3.jpg" alt="">
+
+                <div class="portfolio-layer">
+                    <h4>Web Design</h4>
+                    <p>Em Breve</p>
+                    <a href="#"><i class='bx bx-link-external'></i></a>
+                </div>
+            </div>
+            <div class="portfolio-box">
+                <img src="images/portfolio4.jpg" alt="">
+
+                <div class="portfolio-layer">
+                    <h4>Web Design</h4>
+                    <p>Em Breve</p>
+                    <a href="#"><i class='bx bx-link-external'></i></a>
+                </div>
+            </div>
+            <div class="portfolio-box">
+                <img src="images/portfolio5.jpg" alt="">
+
+                <div class="portfolio-layer">
+                    <h4>Web Design</h4>
+                    <p>Em Breve</p>
+                    <a href="#"><i class='bx bx-link-external'></i></a>
+                </div>
+            </div>
+            <div class="portfolio-box">
+                <img src="images/portfolio6.jpg" alt="">
+
+                <div class="portfolio-layer">
+                    <h4>Web Design</h4>
+                    <p>Em Breve</p>
+                    <a href="#"><i class='bx bx-link-external'></i></a>
+                </div>
+            </div> -->
+        </div>
+    </section>
+
+    <!-- testimonial design -->
+    <div class="testimonial-container">
+        <h2 class="heading">Meus <span>Professores</span></h2>
+
+        <div class="testimonial-wrapper">
+            <div class="testimonial-box mySwiper">
+                <div class="testimonial-content swiper-wrapper">
+                    <div class="testimonial-slide swiper-slide">
+                        <img src="images/testimonial1.jpg" alt="">
+                        <h3>Jackson Levi</h3>
+                        <p>Bom aluno.</p>
+                    </div>
+                    <div class="testimonial-slide swiper-slide">
+                        <img src="images/testimonial2.jpg" alt="">
+                        <h3>Flora Ocean</h3>
+                        <p>Bom aluno.</p>
+                    </div>
+                    <div class="testimonial-slide swiper-slide">
+                        <img src="images/testimonial3.jpg" alt="">
+                        <h3>Julian Grayson</h3>
+                        <p>Bom aluno.</p>
+                    </div>
+                </div>
+
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- contact section design -->
+    <section class="contact" id="contact">
+        <h2 class="heading">Entre em contato</h2>
+
+        <form action="https://formspree.io/f/mblawdlv" method="POST">
+            <div class="input-box">
+                <input type="text" name="nome" placeholder="Nome Completo" required>
+                <input type="email" name ="email" placeholder="Endereço de email" required>
+            </div>
+            <div class="input-box">
+                <input type="tel" id="telefone" name="telefone" maxlength="15" autocomplete="off" placeholder="Celular: (DDD) 9XXXX-XXXX" required>
+                <input type="text" name="assunto" placeholder="Assunto do Email">
+            </div>
+            <textarea name="mensagem" id="" cols="30" rows="10" placeholder="Sua Mensagem" required></textarea>
+            <input type="submit" value="Enviar Mensagem" class="btn">
+        </form>
+    </section>
+
+    <!-- footer design -->
+    <footer class="footer">
+        <div class="footer-text">
+            <p>Copyright &copy; 2025 | Todos os direitos reservados.</p>
+        </div>
+
+        <div class="footer-iconTop">
+            <a href="#home"><i class='bx bx-up-arrow-alt'></i></a>
+        </div>
+    </footer>
+
+
+    <!-- scroll reveal -->
+    <script src="https://unpkg.com/scrollreveal"></script>
+
+    <!-- swiper js -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
+    <!-- custom js -->
+    <script src="js/script.js"></script>
+    <script>
+    // Máscara automática para telefone celular brasileiro (DDD) 9XXXX-XXXX
+    document.addEventListener('DOMContentLoaded', function() {
+        var telInput = document.getElementById('telefone');
+        if (telInput) {
+            telInput.addEventListener('input', function(e) {
+                let v = this.value.replace(/\D/g, ''); // Remove tudo que não for número
+                if (v.length > 11) v = v.slice(0, 11);
+                let formatted = '';
+                if (v.length > 0) {
+                    formatted += '(' + v.substring(0, 3);
+                }
+                if (v.length >= 3) {
+                    formatted += ') ';
+                }
+                if (v.length >= 4) {
+                    formatted += v.substring(3, 8);
+                }
+                if (v.length >= 8) {
+                    formatted += '-' + v.substring(8, 12);
+                }
+                this.value = formatted;
+            });
+            // Impede digitação de caracteres não numéricos
+            telInput.addEventListener('keypress', function(e) {
+                if (e.which < 48 || e.which > 57) {
+                    e.preventDefault();
+                }
+            });
+        }
+    });
+    </script>
+</body>
+
+</html>

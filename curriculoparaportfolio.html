@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfólio - Matheus Santos Marinho de Souza</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            background-color: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            font-family: 'Inter', sans-serif;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background: #e5e7eb; 
+            margin: 24px 0;
+        }
+        .project-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .project-card:hover {
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <div class="bg-white shadow-xl rounded-xl p-8 md:p-12 max-w-4xl w-full my-8">
+        
+        <header class="text-center">
+            <h1 class="text-4xl font-bold text-gray-900 mb-2">Matheus Santos Marinho de Souza</h1>
+            <div class="text-gray-600 mb-6 flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-sm">
+                <span class="flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Brasília, DF
+                </span>
+                <span class="flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                    (61) 98213-9147
+                </span>
+                <a href="mailto:mmarinhods@gmail.com" class="text-blue-600 hover:underline flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    mmarinhods@gmail.com
+                </a>
+                <a href="https://www.linkedin.com/in/matheus-santosds" target="_blank" class="text-blue-600 hover:underline flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"/></svg>
+                    LinkedIn
+                </a>
+            </div>
+        </header>
+
+        <hr>
+
+        <section>
+            <h2 class="text-2xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">Perfil Profissional</h2>
+            <p class="mb-4 text-justify">Desenvolvedor recém-formado em Análise e Desenvolvimento de Sistemas e atual estudante de Engenharia da Computação, com sólida base em programação e desenvolvimento web. Busco ativamente por uma oportunidade como Desenvolvedor Júnior, Analista de Dados ou Analista de Sistemas para aplicar e expandir minhas habilidades em projetos desafiadores, contribuindo para o crescimento da empresa com criatividade e dedicação.</p>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2 class="text-2xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">Habilidades Técnicas</h2>
+            <div class="grid md:grid-cols-2 gap-x-8 gap-y-4">
+                <div>
+                    <h3 class="font-semibold text-lg text-gray-700">Front-end</h3>
+                    <p>HTML, CSS, JavaScript</p>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-lg text-gray-700">Back-end</h3>
+                    <p>PHP, Java, Python</p>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-lg text-gray-700">Banco de Dados</h3>
+                    <p>MySQL</p>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-lg text-gray-700">Ferramentas e Outros</h3>
+                    <p>Pacote Office, Git/GitHub, Desenvolvimento Mobile (Java)</p>
+                </div>
+            </div>
+        </section>
+        
+        <hr>
+
+        <section>
+            <h2 class="text-2xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">Projetos Relevantes</h2>
+            <div class="space-y-6">
+                <div class="p-5 bg-gray-50 rounded-lg shadow-sm border border-gray-200 project-card">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Gerenciador de Tarefas Web com Painel Admin</h3>
+                    <p class="text-gray-600 text-sm mb-3">Desenvolvedor Full Stack | Duração: 1 semana</p>
+                    <p class="text-gray-700 mb-3 text-justify">Desenvolvimento de uma aplicação web completa para gerenciamento de tarefas, incluindo um painel administrativo com sistema de login. Fui responsável pela modelagem do banco de dados, implementação da lógica de back-end e integração com a interface do usuário.</p>
+                    <p class="text-gray-700"><strong class="font-medium">Tecnologias:</strong> PHP, MySQL, JavaScript, HTML, CSS, NODEJS.</p>
+                </div>
+
+                <div class="p-5 bg-gray-50 rounded-lg shadow-sm border border-gray-200 project-card">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Jogo de Tabuleiro em PHP</h3>
+                    <p class="text-gray-600 text-sm mb-3">Desenvolvedor Back-end | Duração: 1 semana</p>
+                    <p class="text-gray-700 mb-3 text-justify">Criação da lógica e das regras de um jogo de tabuleiro, utilizando PHP para processar as jogadas e gerenciar o estado do jogo. O foco foi a resolução de problemas lógicos e a depuração de código para garantir a correta funcionalidade.</p>
+                    <p class="text-gray-700"><strong class="font-medium">Tecnologias:</strong> PHP, HTML, CSS.</p>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2 class="text-2xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">Formação Acadêmica</h2>
+            <div class="mb-4">
+                <p class="font-semibold text-lg text-gray-700">Engenharia da Computação</p>
+                <p class="text-gray-600">UNICEUB – Centro Universitário de Brasília | Cursando 1º Semestre</p>
+            </div>
+            <div>
+                <p class="font-semibold text-lg text-gray-700">Análise e Desenvolvimento de Sistemas</p>
+                <p class="text-gray-600">UDF Centro Universitário | Concluído em 26/08/2025</p>
+            </div>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2 class="text-2xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">Cursos e Certificações</h2>
+            <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                <li><strong class="font-medium">Desenvolvimento WEB Completo</strong></li>
+                <li><strong class="font-medium">Ninja do Excel</strong> (Básico ao Avançado)</li>
+                <li><strong class="font-medium">Segurança de Dados</strong> (Iniciante)</li>
+            </ul>
+        </section>
+
+    </div>
+</body>
+</html>
