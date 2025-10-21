@@ -35,7 +35,12 @@
 
         <div class="bx bx-moon" id="darkMode-icon"></div>
 
+        <div id="user-session" style="margin-left: 1rem;">
+            <a href="#" id="login-btn" class="btn">Login com GitHub</a>
+        </div>
+
         <div class="bx bx-menu" id="menu-icon"></div>
+
     </header>
 
     <!-- home section design -->
@@ -145,25 +150,9 @@
     <section class="portfolio" id="portfolio">
         <h2 class="heading">Últimos <span>Projetos</span></h2>
 
-        <div class="portfolio-container">
-            <div class="portfolio-box">
-                <img src="images/adminpainel.png" alt="">
-
-                <div class="portfolio-layer">
-                    <h4>Painel de Admin</h4>
-                    <p>Projeto simples feito durante o final do curso de analíse e desenvolvimento de sistemas</p>
-                    <a href="ProjetoAdmin/admin_tarefas.html"><i class='bx bx-link-external'></i></a>
-                </div>
-            </div>
-            <div class="portfolio-box">
-                <img src="images/banco.png" alt="">
-
-                <div class="portfolio-layer">
-                    <h4>Banco Imobiliário</h4>
-                    <p>Projeto simples feito durante o curso de analíse e desenvolvimento de sistemas</p>
-                    <a href="Life game/Life game/index.html"><i class='bx bx-link-external'></i></a>
-                </div>
-            </div>
+        <div class="portfolio-container" id="github-projects-container">
+            <p>Carregando projetos do GitHub...</p>
+        </div>
            <!-- <div class="portfolio-box">
                 <img src="images/portfolio3.jpg" alt="">
 
@@ -272,6 +261,9 @@
 
     <!-- custom js -->
     <script src="js/script.js"></script>
+    <script src="js/github-integration.js"></script>
+    <script src="js/auth.js"></script>
+    
     <script>
     // Máscara automática para telefone celular brasileiro (DDD) 9XXXX-XXXX
     document.addEventListener('DOMContentLoaded', function() {

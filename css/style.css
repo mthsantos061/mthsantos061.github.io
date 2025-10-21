@@ -626,6 +626,41 @@ span {
 }
 
 
+/* ESTILOS PARA O USUÁRIO LOGADO E LOGOUT */
+.github-user-link {
+    text-decoration: none; /* Remove o sublinhado do link */
+    display: inline-block;
+    outline: none;
+}
+
+.github-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 5px 10px;
+    border-radius: 50px;
+    transition: background-color 0.3s ease; /* Transição suave */
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+
+/* Efeito hover agora é aplicado quando o mouse está sobre o link */
+.github-user-link:hover .github-user {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.github-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+}
+
+.github-name {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+}
 /* BREAKPOINTS */
 @media (max-width: 1200px) {
     html {
